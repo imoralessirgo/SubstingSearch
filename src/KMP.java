@@ -1,3 +1,6 @@
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 public class KMP {
     private final int R;       // the radix
     private int[][] dfa;       // the KMP automoton
@@ -104,8 +107,10 @@ public class KMP {
 
 //        String pat = args[0];
 //        String txt = args[1];
-        String pat = "aaahelloaa";
-        String txt = "hello";
+    	System.out.println("Enter the pattern: ");
+        String pat = StdIn.readString();
+        System.out.println("Enter the text: ");
+        String txt = StdIn.readString();
 
         char[] pattern = pat.toCharArray();
         char[] text    = txt.toCharArray();
