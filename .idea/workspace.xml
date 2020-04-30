@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="888925bc-9dc5-4f9e-af04-19595fa888e3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NaiveSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaiveSearch.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +68,7 @@
       <workItem from="1587926953678" duration="3126000" />
       <workItem from="1588111267922" duration="1967000" />
       <workItem from="1588117147858" duration="1198000" />
-      <workItem from="1588221238838" duration="200000" />
+      <workItem from="1588221238838" duration="440000" />
     </task>
     <servers />
   </component>
