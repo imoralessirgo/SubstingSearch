@@ -8,7 +8,7 @@ public class KMP {
     private char[] pattern;    // either the character array for the pattern
     private String pat;        // or the pattern string
 
-    private int NUM_COMPARISONS;
+    public int NUM_COMPARISONS;
 
     /**
      * Preprocesses the pattern string.
@@ -72,13 +72,16 @@ public class KMP {
         // simulate operation of DFA on text
         int m = pat.length();
         int n = txt.length();
-        int i, j;
-        for (i = 0, j = 0; i < n && j < m; i++) {
-            NUM_COMPARISONS++;      //worst-case: n
+        int i, j, count=0;
+        for (i = 0, j = 0; i < n; i++) {
             j = dfa[txt.charAt(i)][j];
+            NUM_COMPARISONS++;      // +1 array inspection per for loop interation
+            if (j==m)  {
+                count++;
+                j=0;
+            }
         }
-        if (j == m) return i - m;    // found
-        return n;                    // not found
+        return count;                   // returns count, number of times we found the word
     }
 
     /**
@@ -94,13 +97,16 @@ public class KMP {
         // simulate operation of DFA on text
         int m = pattern.length;
         int n = text.length;
-        int i, j;
-        for (i = 0, j = 0; i < n && j < m; i++) {
-            NUM_COMPARISONS++; //Figure out which thing to count with this variable (do we count .charAt()? what about a[i]?)
-            j = dfa[text[i]][j]; //ISSUE: this is too compact code to show how a smaller alphabet is worse.
+        int i, j, count=0;
+        for (i = 0, j = 0; i < n; i++) {
+            j = dfa[text[i]][j];
+            NUM_COMPARISONS++; // +1 array inspection per for loop interation
+            if (j==m)  {
+                count++;
+                j=0;
+            }
         }
-        if (j == m) return i - m;    // found
-        return n;                    // not found
+        return count;                    // returns count, number of times we found the word
     }
 
 
@@ -145,29 +151,5 @@ public class KMP {
         System.out.println(pat);
     }
 
-    /**
-     * Gets average number of comparisons KMP uses for a given text_length (n) and alphabet
-     * @param text_length the length of text to be searched through
-     * @param alphabet the alphabet to be used for constructing the random text and pattern.
-     * @return average number of comparisons of KMP
-     */
-    public static double particular_test(int text_length, int pattern_length, String alphabet) {
-        double sum = 0;
-        int trial_kount = 1000;
-        long time_sum = 0;
-        for(int i=0; i<trial_kount; i++) {
-            //int random = (int)Math.ceil((Math.random()*text_length)+0.01); //we can change this to a nonrandom, or a range, or something else
-            String pattern = Randomizer.numRandomizer(pattern_length, alphabet);
-            String text = Randomizer.numRandomizer(text_length, alphabet);
-            long startTime = System.nanoTime();
-            KMP kmp = new KMP(pattern);
-            kmp.search(text);
-            long endTime = System.nanoTime();
-            time_sum += (endTime-startTime);
-            sum+= kmp.NUM_COMPARISONS;
-        }
-        long avg_time = time_sum/trial_kount;
-        double average = sum/trial_kount;
-        return average;
-    }
+
 }
