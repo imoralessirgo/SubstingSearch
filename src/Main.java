@@ -6,6 +6,12 @@ public class Main {
 
     /**
      *  TODO:
+     *  fix up print statements
+     *  divide into 6 functions, as we will do data-gathering on each of these 6 functions:
+     *      comparisons_vary_n
+     *      comparisons_vary_m
+     *      comparisons_vary_alphabet
+     *      comparisons_vary_
      *  -write tons of tests, record data, graph data, write analyses on data. Tests can be written in test_suites or
      *  other functions you create that are called by test_suites. Please do not write individual tests in other functions
      */
@@ -43,7 +49,7 @@ public class Main {
      */
     private static void test_m(int n, String alphabet, int trials, boolean is_time) {
         int[] m_values = new int[9];
-        for(int i=(int)Math.pow(2,6); i<=(int)Math.pow(2,14); i++) m_values[i] = (int)Math.pow(2,i);
+        for(int i=6; i<=14; i++) m_values[i-6] = (int)Math.pow(2,i);
         System.out.println("Comparisons based on M, where N = " + n + " and alphabet = " + alphabet + "");
         System.out.println("M\tKMP\tNaive");
         String[] random_texts = initializeRandomStrings(n, trials, alphabet);
@@ -63,7 +69,7 @@ public class Main {
      */
     private static void test_n(int m, String alphabet, int trials, boolean is_time) {
         int[] n_values = new int[9];
-        for(int i=(int)Math.pow(2,14); i<=(int)Math.pow(2,22); i++) n_values[i] = (int)Math.pow(2,i);
+        for(int i=14; i<=22; i++) n_values[i-14] = (int)Math.pow(2,i);
         System.out.println("Comparisons based on N, where M = " + m + " and alphabet = " + alphabet + "");
         System.out.println("N\tKMP\tNaive");
         String[] random_patterns = initializeRandomStrings(m, trials, alphabet);
@@ -94,7 +100,7 @@ public class Main {
         System.out.println("------------------------------------------");
     }
 
-    //the below 1 functions are necessary so taht I can run the exact same test strings for both searches to
+    //the below 1 functions are necessary so that I can run the exact same test strings for both searches to
     //make our data as accurate as possible.
     /**
      * creates a list of random strings of size n, with the list being of length size.
