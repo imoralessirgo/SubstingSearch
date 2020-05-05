@@ -6,8 +6,8 @@ public class Main {
 
     /**
      *  TODO:
-     *  -implement time trials. these can be separate functions than the operation trials.
-     *  -implement te
+     *  -write tons of tests, record data, graph data, write analyses on data. Tests can be written in test_suites or
+     *  other functions you create that are called by test_suites. Please do not write individual tests in other functions
      */
 
     /**
@@ -18,12 +18,12 @@ public class Main {
      *     where kmp == naive and kmp > naive
      *     other cool stuff
      */
-    public static void test_suites() {
+    private static void test_suites() {
         //add a lot of tests for each of the three variables.
         //below are some example tests. feel free to also add tests via loops!
-        test_n((int)Math.pow(2,9), "abcde", 100);
-        test_m((int)Math.pow(2,19), "abcdef", 100);
-        test_alphabet((int)Math.pow(2,10), (int)Math.pow(2,20), 100);
+        test_n((int)Math.pow(2,9), "abcde", 100, false);
+        test_m((int)Math.pow(2,19), "abcdef", 100, false);
+        test_alphabet((int)Math.pow(2,10), (int)Math.pow(2,20), 100, false);
     }
     /*
         What we want to test (aka values that we can vary):
@@ -32,13 +32,16 @@ public class Main {
             Alphabet
         **only vary one at a time
 */
+    // Please do not modify any of the below functions to include specific tests. Instead, write tests above that call
+    // either test_m, test_n, or test_alphabet.
+
     /**
      * test suite for variable m (pattern length)
      * @param n N value (text size)
      * @param alphabet the alphabet used for text and pattern
      * @param trials the number of trials to be run
      */
-    public static void test_m(int n, String alphabet, int trials) {
+    private static void test_m(int n, String alphabet, int trials, boolean is_time) {
         int[] m_values = new int[9];
         for(int i=(int)Math.pow(2,6); i<=(int)Math.pow(2,14); i++) m_values[i] = (int)Math.pow(2,i);
         System.out.println("Comparisons based on M, where N = " + n + " and alphabet = " + alphabet + "");
@@ -46,7 +49,8 @@ public class Main {
         String[] random_texts = initializeRandomStrings(n, trials, alphabet);
         for(int i=0;i<m_values.length&&m_values[i]<n;i++) {
             String[] random_patterns = initializeRandomStrings(m_values[i], trials, alphabet);
-            System.out.println(m_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
+            if (is_time) System.out.println(m_values[i] + "\t" + kmp_test_time(random_patterns, random_texts) + "\t" + naive_test_time(random_patterns, random_texts));
+            else System.out.println(m_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
         }
         System.out.println("------------------------------------------");
     }
@@ -57,7 +61,7 @@ public class Main {
      * @param alphabet the alphabet used for text and pattern
      * @param trials the number of trials to be run
      */
-    public static void test_n(int m, String alphabet, int trials) {
+    private static void test_n(int m, String alphabet, int trials, boolean is_time) {
         int[] n_values = new int[9];
         for(int i=(int)Math.pow(2,14); i<=(int)Math.pow(2,22); i++) n_values[i] = (int)Math.pow(2,i);
         System.out.println("Comparisons based on N, where M = " + m + " and alphabet = " + alphabet + "");
@@ -65,7 +69,8 @@ public class Main {
         String[] random_patterns = initializeRandomStrings(m, trials, alphabet);
         for(int i=0;i<n_values.length&&n_values[i]>m;i++) {
             String[] random_texts = initializeRandomStrings(n_values[i], trials, alphabet);
-            System.out.println(n_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
+            if(is_time)System.out.println(n_values[i] + "\t" + kmp_test_time(random_patterns, random_texts) + "\t" + naive_test_time(random_patterns, random_texts));
+            else System.out.println(n_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
         }
         System.out.println("------------------------------------------");
     }
@@ -76,14 +81,15 @@ public class Main {
      * @param m M value (pattern size)
      * @param trials the number of trials to be run
      */
-    public static void test_alphabet(int n, int m, int trials) {
+    private static void test_alphabet(int n, int m, int trials, boolean is_time) {
         String[] alphabets = {"abcdefghijklmnopqrstuvwxyz", "01", "actg"};
         System.out.println("Comparisons based on Alphabets, where N = " + n + " and M = " + m + "");
         System.out.println("KMP\tNaive\tAlphabet");
         for(String a:alphabets) {
             String[] random_patterns = initializeRandomStrings(m, trials, a);
             String[] random_texts = initializeRandomStrings(n, trials, a);
-            System.out.println(kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts) + "\t" + a);
+            if (is_time) System.out.println(kmp_test_time(random_patterns, random_texts) + "\t" + naive_test_time(random_patterns, random_texts) + "\t" + a);
+            else System.out.println(kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts) + "\t" + a);
         }
         System.out.println("------------------------------------------");
     }
@@ -114,19 +120,14 @@ public class Main {
      */
     private static double kmp_tests(String[] patterns, String[] texts) {
         double sum = 0;
-        long time_sum = 0;
         int trial_kount = patterns.length;
         for(int i=0; i<trial_kount; i++) {
             String pattern = patterns[i];
             String text = texts[i];
-            long startTime = System.nanoTime();
             KMP kmp = new KMP(pattern);
             kmp.search(text);
-            long endTime = System.nanoTime();
-            time_sum += (endTime-startTime);
             sum+= kmp.NUM_COMPARISONS;
         }
-        long avg_time = time_sum/trial_kount; //the time stuff is a WIP
         return sum/trial_kount;
     }
 
@@ -144,6 +145,43 @@ public class Main {
             sum+=NaiveSearch.numComp;
         }
         return sum/trial_kount;
+    }
+
+    /**
+     *
+     * @param patterns
+     * @param texts
+     * @return average running time of a trial, in miliseconds
+     */
+    private static double kmp_test_time(String[] patterns, String[] texts) {
+        double sum = 0;
+        int trial_kount = patterns.length;
+        for(int i=0; i<trial_kount; i++) {
+            String pattern = patterns[i], text = texts[i];
+            long startTime = System.nanoTime();
+            KMP kmp = new KMP(pattern);
+            kmp.search(text);
+            long endTime = System.nanoTime();
+            sum += (endTime-startTime);
+        }
+        return (sum/trial_kount)/1000000;
+    }
+
+    /**
+     *
+     * @param patterns
+     * @param texts
+     * @return
+     */
+    private static double naive_test_time(String[] patterns, String[] texts) {
+        double sum = 0;
+        for(int i=0; i<patterns.length; i++) {
+            long startTime = System.nanoTime();
+            NaiveSearch.search(texts[i], patterns[i]);
+            long endTime = System.nanoTime();
+            sum += endTime-startTime;
+        }
+        return (sum/patterns.length)/1000000;
     }
 
 }
