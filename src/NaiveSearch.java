@@ -28,7 +28,7 @@ public class NaiveSearch {
                     break;
                 }
                 //If a pattern is found, print out the index it was found at
-                if (j == M)
+                if (M==(j+1))
                     System.out.println("Pattern found at index " + i);
             }
         }

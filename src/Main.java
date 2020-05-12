@@ -1,16 +1,8 @@
 public class Main {
-
     public static void main(String[] args) {
         test_suites();
     }
 
-    /**
-     *  TODO:
-     *  check for bugs
-     *  run extensive, long tests
-     *  record data from tests
-     *  NOTE: current trial_count is low so that people can run this within a reasonable amount of time (~30-60 seconds)
-     */
 
     private static void test_suites() {
         n_test_suite();
@@ -39,7 +31,7 @@ public class Main {
     private static void n_test_suite() {
         System.out.println("BEGINNING N TEST SUITE");
         System.out.println("------------------------------------------");
-        final int trial_count = 10;
+        final int trial_count = 100;
         final int[] large_m_values = {(int)Math.pow(2,6), (int)Math.pow(2,10), (int)Math.pow(2,13)};
         final String[] alphabets = {"abcdefghijklmnopqrstuvwxyz", "01", "actg"};
         System.out.println("Comparison testing for 9 (M,Alphabet) pairs for varying LARGE N's");
@@ -91,7 +83,7 @@ public class Main {
     private static void m_test_suite() {
         System.out.println("BEGINNING M TEST SUITE");
         System.out.println("------------------------------------------");
-        final int trial_count = 10;
+        final int trial_count = 100;
         final int[] large_n_values = {(int)Math.pow(2,14), (int)Math.pow(2,18), (int)Math.pow(2,22)};
         final String[] alphabets = {"abcdefghijklmnopqrstuvwxyz", "01", "actg"};
         System.out.println("Comparison testing for 9 (N,Alphabet) pairs for varying LARGE M's");
@@ -142,7 +134,7 @@ public class Main {
     private static void alphabet_test_suite() {
         System.out.println("BEGINNING ALPHABET TEST SUITE");
         System.out.println("------------------------------------------");
-        final int trial_count = 10;
+        final int trial_count = 100;
         final int[] n_values = {(int)Math.pow(2,14), (int)Math.pow(2,18), (int)Math.pow(2,22)};
         final int[] m_values = {(int)Math.pow(2,6), (int)Math.pow(2,10), (int)Math.pow(2,13)};
         System.out.println("Comparison testing for 9 (N,M) pairs for varying alphabets");
@@ -177,8 +169,8 @@ public class Main {
     private static void comparisons_vary_m(int n, String alphabet, int trials, boolean isLarge) {
         final int[] m_values = new int[(isLarge ? 8 : 6)];
         for(int i=(isLarge ? 7 : 1); i<=((isLarge ? 14 : 6)); i++) m_values[i-(isLarge ? 7 : 1)] = (int)Math.pow(2,i);
-        System.out.println("Comparisons based on M, where N = " + n + " and alphabet = " + alphabet + "");
-        System.out.println("M\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: N = " + n + ", alphabet = " + alphabet + "");
+        System.out.println("M\tKMP\tNaive");
         final String[] random_texts = initializeRandomStrings(n, trials, alphabet);
         for(int i=0;i<m_values.length&&m_values[i]<n;i++) {
             final String[] random_patterns = initializeRandomStrings(m_values[i], trials, alphabet);
@@ -196,12 +188,12 @@ public class Main {
     private static void comparisons_vary_n(int m, String alphabet, int trials, boolean isLarge) {
         final int[] n_values = new int[(isLarge ? 9 : 7)];
         for(int i=isLarge ? 14 : 5; i<=(isLarge ? 22 : 11); i++) n_values[i-(isLarge ? 14 : 5)] = (int)Math.pow(2,i);
-        System.out.println("Comparisons based on N, where M = " + m + " and alphabet = " + alphabet + "");
-        System.out.println("N\t\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: M = " + m + ", alphabet = " + alphabet + "");
+        System.out.println("N\tKMP\tNaive");
         final String[] random_patterns = initializeRandomStrings(m, trials, alphabet);
         for(int i=0;i<n_values.length&&n_values[i]>m;i++) {
             final String[] random_texts = initializeRandomStrings(n_values[i], trials, alphabet);
-            System.out.println(n_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + " \t" + naive_tests(random_patterns, random_texts));
+            System.out.println(n_values[i] + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
         }
         System.out.println("------------------------------------------");
     }
@@ -214,12 +206,12 @@ public class Main {
      */
     private static void comparisons_vary_alphabet(int n, int m, int trials) {
         final String[] alphabets = {"abcdefghijklmnopqrstuvwxyz", "01", "actg", "0123456789", "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()`~,.<>/?;:[{]}-_=+|"};
-        System.out.println("Comparisons based on Alphabets(A), where N = " + n + " and M = " + m + "");
-        System.out.println("A size\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: N = " + n + ", M = " + m + "");
+        System.out.println("A size\tKMP\tNaive");
         for(String a:alphabets) {
             final String[] random_patterns = initializeRandomStrings(m, trials, a);
             final String[] random_texts = initializeRandomStrings(n, trials, a);
-            System.out.println(a.length() + "\t\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
+            System.out.println(a.length() + "\t" + kmp_tests(random_patterns, random_texts) + "\t" + naive_tests(random_patterns, random_texts));
         }
         System.out.println("------------------------------------------");
     }
@@ -233,8 +225,8 @@ public class Main {
     private static void time_vary_m(int n, String alphabet, int trials, boolean isLarge) {
         final int[] m_values = new int[(isLarge ? 8 : 6)];
         for(int i=(isLarge ? 7 : 1); i<=((isLarge ? 14 : 6)); i++) m_values[i-(isLarge ? 7 : 1)] = (int)Math.pow(2,i);
-        System.out.println("Time (milliseconds) based on M, where N = " + n + " and alphabet = " + alphabet + "");
-        System.out.println("M\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: N = " + n + ", alphabet = " + alphabet + "");
+        System.out.println("M\tKMP\tNaive");
         final String[] random_texts = initializeRandomStrings(n, trials, alphabet);
         for(int i=0;i<m_values.length&&m_values[i]<n;i++) {
            final String[] random_patterns = initializeRandomStrings(m_values[i], trials, alphabet);
@@ -252,8 +244,8 @@ public class Main {
     private static void time_vary_n(int m, String alphabet, int trials, boolean isLarge) {
         final int[] n_values = new int[(isLarge ? 9 : 7)];
         for(int i=isLarge ? 14 : 5; i<=(isLarge ? 22 : 11); i++) n_values[i-(isLarge ? 14 : 5)] = (int)Math.pow(2,i);
-        System.out.println("Time (milliseconds) based on N, where M = " + m + " and alphabet = " + alphabet + "");
-        System.out.println("N\t\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: M = " + m + ", alphabet = " + alphabet + "");
+        System.out.println("N\tKMP\tNaive");
         final String[] random_patterns = initializeRandomStrings(m, trials, alphabet);
         for(int i=0;i<n_values.length&&n_values[i]>m;i++) {
             final String[] random_texts = initializeRandomStrings(n_values[i], trials, alphabet);
@@ -270,12 +262,12 @@ public class Main {
      */
     private static void time_vary_alphabet(int n, int m, int trials) {
         final String[] alphabets = {"abcdefghijklmnopqrstuvwxyz", "01", "actg", "0123456789", "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()`~,.<>/?;:[{]}-_=+|"};
-        System.out.println("Time (milliseconds) based on Alphabets(A), where N = " + n + " and M = " + m + "");
-        System.out.println("A Size\tKMP\t\t\tNaive");
+        System.out.println("CONSTANTS: N = " + n + ", M = " + m + "");
+        System.out.println("A Size\tKMP\tNaive");
         for(String a:alphabets) {
             final String[] random_patterns = initializeRandomStrings(m, trials, a);
             final String[] random_texts = initializeRandomStrings(n, trials, a);
-            System.out.println(a.length() + "\t\t" + kmp_test_time(random_patterns, random_texts) + "\t" + naive_test_time(random_patterns, random_texts));
+            System.out.println(a.length() + "\t" + kmp_test_time(random_patterns, random_texts) + "\t" + naive_test_time(random_patterns, random_texts));
         }
         System.out.println("------------------------------------------");
     }
@@ -324,11 +316,12 @@ public class Main {
      * @return average number of comparisons of Naive implementation
      */
     private static double naive_tests(String[] patterns, String[] texts) {
-        //only one trial, since there is 0 variation for random patterns and texts of same length.
         double sum = 0;
-        NaiveSearch.search(texts[0], patterns[0]);
-        sum+=NaiveSearch.numComp;
-        return sum;
+        for(int i=0; i<patterns.length; i++) {
+            NaiveSearch.search(texts[i], patterns[i]);
+            sum+=NaiveSearch.numComp;
+        }
+        return sum/patterns.length;
     }
 
     /**

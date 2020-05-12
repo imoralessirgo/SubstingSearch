@@ -1,0 +1,18 @@
+HOW TO USE THE CODE IN THE REPOSITORY:
+
+KMP:
+
+To see the implementation in action, run the main method in this class.
+
+NaiveSearch:
+
+To run a trial of this method, run the main method.
+
+Randomizer:
+
+This is the class used for testing random Strings. You can run the main method to see a trial of it.
+
+Main (tests):
+
+To run the tests, simply run the main method. In addition, you can run an individual test suite by simply commenting
+out the other two test suites. To change the trial numbers, look for the variables in the three main test suite methods.
