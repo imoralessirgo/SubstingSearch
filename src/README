@@ -2,11 +2,11 @@ HOW TO USE THE CODE IN THE REPOSITORY:
 
 KMP:
 
-To see the implementation in action, run the main method in this class.
+To see the implementation in action, run the main method in this class. Can modify the pattern and/or text.
 
 NaiveSearch:
 
-To run a trial of this method, run the main method.
+To run a trial of this method, run the main method. Can modify the pattern and/or text.
 
 Randomizer:
 

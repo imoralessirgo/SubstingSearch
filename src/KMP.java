@@ -118,37 +118,27 @@ public class KMP {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-
-//        String pat = args[0];
-//        String txt = args[1];
-    	System.out.println("Enter the pattern: ");
-
-        //String pat = StdIn.readString();
-        System.out.println("Enter the text: ");
-        //String txt = StdIn.readString();
+        //Pattern and text. Can modify these to see different results.
         String pat = "dsgwadsgz";
         String txt = "adsgwadsxdsgwadsgz";
 
         char[] pattern = pat.toCharArray();
         char[] text    = txt.toCharArray();
 
+        //string implementation of KMP
         KMP kmp1 = new KMP(pat);
-        int offset1 = kmp1.search(txt);
+        int count1 = kmp1.search(txt);
+
+        //char array implementation of KMP
         KMP kmp2 = new KMP(pattern, 256);
-        int offset2 = kmp2.search(text);
+        int count2 = kmp2.search(text);
 
         // print results
-        System.out.println("text:    " + txt);
-
-        System.out.println("pattern: ");
-        for (int i = 0; i < offset1; i++)
-            System.out.print(" ");
-        System.out.println(pat);
-
-        System.out.println("pattern: ");
-        for (int i = 0; i < offset2; i++)
-            System.out.print(" ");
-        System.out.println(pat);
+        System.out.println("text: " + txt + " pattern: " + pat);
+        System.out.println("For the string version of KMP, it found it " + count1 + " times.");
+        System.out.println("For the string version of KMP, it made " + kmp1.NUM_COMPARISONS + " comparisons.");
+        System.out.println("For the char version of KMP, it found it " + count2 + " times.");
+        System.out.println("For the char array version of KMP, it made " + kmp2.NUM_COMPARISONS + " comparisons.");
     }
 
 

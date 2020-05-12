@@ -34,7 +34,7 @@ public class NaiveSearch {
         }
     }
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         //Define text and pattern
         String txt = "AABAACAADAABAAABAA";
@@ -43,18 +43,7 @@ public class NaiveSearch {
         //Run search algorithm
         search(txt, pat);
 
-        long start = System.nanoTime();
-        //This counts as 1 second in program time
-        for (int i = 1; i <  6; i++) {
-            Thread.sleep(1000);
-            System.out.println(i);
-        }
-        // finding the time after the operation is executed
-        long end = System.nanoTime();
-        //finding the time difference and converting it into seconds
-        float sec = (end - start) / 1000F; System.out.println(sec + " seconds");
-
-
+        System.out.println("Number of comparisons:" + numComp);
 
     }
 
